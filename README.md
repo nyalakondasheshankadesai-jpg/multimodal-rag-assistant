@@ -52,6 +52,24 @@ graph TD
 
 *(You can also find this diagram in [`assets/architecture.md`](assets/architecture.md)).*
 
+## Repository Structure
+
+```text
+multimodal-rag-assistant/
+├── backend/
+│   ├── embeddings/     # Embeddings factory (HuggingFace)
+│   ├── ingestion/      # Multi-format parsers (PDF, DOCX, Image, Text)
+│   ├── llm/            # LLM factory (Gemini Vision, Ollama)
+│   ├── main.py         # FastAPI application and endpoints
+│   └── rag.py          # LlamaIndex & Qdrant orchestration
+├── frontend/
+│   └── app.py          # Streamlit user interface
+├── data/               # Local Qdrant DB storage and uploads
+├── assets/             # Architecture diagrams and images
+├── .env.example        # Environment variable template
+└── README.md
+```
+
 ## Core Technologies
 
 - **Frontend:** [Streamlit](https://streamlit.io/)
