@@ -80,6 +80,4 @@ graph TD
 
 <br />
 
-<div align="center">
-<i>README MADE WITH <a href="https://github.com/example/beautify-github-readme">beautify-github-readme</a></i>
-</div>
+
