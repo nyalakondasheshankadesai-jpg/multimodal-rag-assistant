@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Multimodal RAG Assistant",
+    "subtitle": "FastAPI + Streamlit + LlamaIndex + Gemini Vision",
+    "output": "architecture.html"
+  },
+  "components": [
+    {
+      "id": "user", "type": "external", "label": "Browser Client", "sublabel": "User Interactions",
+      "pos": [40, 300], "size": [140, 60]
+    },
+    {
+      "id": "streamlit", "type": "frontend", "label": "Streamlit UI", "sublabel": "Port 8501",
+      "pos": [240, 300], "size": [140, 60]
+    },
+    {
+      "id": "fastapi", "type": "backend", "label": "FastAPI Server", "sublabel": "REST API (Port 8000)",
+      "pos": [440, 300], "size": [140, 60]
+    },
+    {
+      "id": "ingestion", "type": "backend", "label": "Document Parsers", "sublabel": "PDF, DOCX, Img, TXT",
+      "pos": [440, 140], "size": [140, 60]
+    },
+    {
+      "id": "uploads", "type": "database", "label": "Local Storage", "sublabel": "./data/uploads",
+      "pos": [640, 140], "size": [140, 60]
+    },
+    {
+      "id": "llamaindex", "type": "backend", "label": "LlamaIndex Core", "sublabel": "Orchestration Engine",
+      "pos": [640, 300], "size": [140, 60], "tag": "orchestrator"
+    },
+    {
+      "id": "qdrant", "type": "database", "label": "Qdrant Vector DB", "sublabel": "Local Disk Mode",
+      "pos": [840, 300], "size": [140, 60]
+    },
+    {
+      "id": "gemini_vision", "type": "cloud", "label": "Gemini Vision API", "sublabel": "Google AI",
+      "pos": [640, 460], "size": [140, 60]
+    },
+    {
+      "id": "hf_embeddings", "type": "backend", "label": "Local Embeddings", "sublabel": "HuggingFace (bge-small)",
+      "pos": [840, 460], "size": [140, 60]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Local Server Environment",
+      "wraps": ["streamlit", "fastapi", "ingestion", "uploads", "llamaindex", "qdrant", "hf_embeddings"]
+    },
+    {
+      "kind": "region",
+      "label": "External AI Provider",
+      "wraps": ["gemini_vision"]
+    }
+  ],
+  "connections": [
+    { "from": "user", "to": "streamlit", "variant": "emphasis" },
+    { "from": "streamlit", "to": "fastapi", "variant": "emphasis", "label": "REST calls" },
+    { "from": "fastapi", "to": "llamaindex", "variant": "emphasis", "label": "query / index", "labelDy": -28 },
+    { "from": "fastapi", "to": "ingestion", "fromSide": "top", "toSide": "bottom" },
+    { "from": "ingestion", "to": "uploads", "label": "save files", "variant": "dashed" },
+    { "from": "llamaindex", "to": "qdrant", "variant": "emphasis", "label": "vectors" },
+    { "from": "llamaindex", "to": "hf_embeddings", "fromSide": "right", "toSide": "top", "variant": "dashed" },
+    { "from": "llamaindex", "to": "gemini_vision", "fromSide": "bottom", "toSide": "top", "variant": "dashed", "label": "LLM prompts", "labelDy": 24 }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Primary User Path",
+      "items": [
+        "User uploads documents or images via Streamlit frontend.",
+        "FastAPI orchestrates indexing through LlamaIndex.",
+        "Vectors are persisted to Qdrant, allowing lightning-fast retrieval."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Component Details",
+      "items": [
+        "Document Parsers: Handle different file formats (PDFs, DOCX, TXT, Images).",
+        "Local Storage: Ensures data sovereignty for raw uploads before parsing.",
+        "HuggingFace: Local embedding model (BAAI/bge-small-en) operates entirely locally."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust Boundaries",
+      "items": [
+        "All data storage (Qdrant & Uploads) is held securely on the local server.",
+        "Only inference text/prompts traverse the external boundary to Gemini Vision.",
+        "No OpenAI services are used, aligning with strict local-first constraints."
+      ]
+    }
+  ]
+}
