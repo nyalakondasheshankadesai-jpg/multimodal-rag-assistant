@@ -50,7 +50,7 @@ graph TD
     Streamlit -->|Renders Answer| User
 ```
 
-*(You can also find this diagram in [`assets/architecture.md`](assets/architecture.md), or view the interactive **[Archify Runtime Architecture Diagram](https://htmlpreview.github.io/?https://raw.githubusercontent.com/nyalakondasheshankadesai-jpg/multimodal-rag-assistant/main/rag_architecture.html)**).*
+*(You can also find this diagram in [`assets/architecture.md`](assets/architecture.md), or view the interactive **[Runtime Architecture Diagram](https://htmlpreview.github.io/?https://raw.githubusercontent.com/nyalakondasheshankadesai-jpg/multimodal-rag-assistant/main/rag_architecture.html)**).*
 
 ## Repository Structure
 
